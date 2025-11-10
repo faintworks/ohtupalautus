@@ -7,7 +7,7 @@ class Player:
         self.goals = player_dict['goals']
         self.assists = player_dict['assists']
         self.nationality = player_dict['nationality']
-    
+
     def __str__(self):
         return f"{self.name:20} {self.team}   {self.goals} + {self.assists} = {self.goals + self.assists}"
 
@@ -17,10 +17,10 @@ class PlayerReader:
         self.players = self.get_players()
 
     def get_players(self):
-        response = requests.get(self.url).json()
+        response = requests.get(self.url, timeout=10).json()  # Lisätty timeout
         players = [Player(player_dict) for player_dict in response]
         return players
-    
+
 class PlayerStats:
     def __init__(self, reader):
         self.reader = reader
