@@ -1,0 +1,23 @@
+[project]
+name = "poetry-web"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "faintworks",email = "iiro.laitinen04@gmail.com"}
+]
+readme = "README.md"
+requires-python = "^3.12"
+dependencies = [
+    "flask (>=3.1.2,<4.0.0)",
+    "sqlalchemy (==1.4.54)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.0.0,<10.0.0)"
+]
