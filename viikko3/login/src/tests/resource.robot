@@ -31,6 +31,9 @@ Open And Configure Browser
 Login Page Should Be Open
     Title Should Be  Login
 
+Register Page Should Be Open
+    Title Should Be  Register
+
 Main Page Should Be Open
     Title Should Be  Ohtu Application main page
 
