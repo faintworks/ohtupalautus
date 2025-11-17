@@ -40,7 +40,20 @@ class UserService:
         if not username or not password:
             raise UserInputError("Username and password are required")
 
-        # toteuta loput tarkastukset tänne ja nosta virhe virhetilanteissa
+        if len(username) < 3:
+            raise UserInputError("Username too short")
+
+        if self._user_repository.find_by_username(username):
+            raise UserInputError("Username already exists")
+
+        if len(password) < 8:
+            raise UserInputError("Password too short")
+
+        if password.isalpha():
+            raise UserInputError("Password must contain at least one number or special character")
+
+        if password != password_confirmation:
+            raise UserInputError("Passwords do not match")
 
 
 user_service = UserService()
