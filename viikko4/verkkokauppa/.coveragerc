@@ -1,0 +1,17 @@
+[run]
+source = src
+omit =
+    src/kirjanpito.py
+    src/index.py
+    src/pankki.py
+    src/ostoskori.py
+    src/tuote.py
+    src/varasto.py
+    src/viitegeneraattori.py
+    */tests/*
+    */__pycache__/*
+    */venv/*
+
+[report]
+exclude_lines =
+    if __name__ == .__main__.:

@@ -115,3 +115,96 @@ class TestKauppa(unittest.TestCase):
             self.kaupan_tili,
             5      # vain ensimmäinen tuote lasketaan
         )
+
+    def test_aloita_asiointi_nollaa_edellisen_ostoksen(self):
+        # saldo ja hae_tuote palauttavat tuotteen 1 = maito = 5e
+        self.varasto_mock.saldo.return_value = 10
+        self.varasto_mock.hae_tuote.return_value = Tuote(1, "maito", 5)
+
+        kauppa = Kauppa(self.varasto_mock, self.pankki_mock, self.viite_mock)
+
+        # Asiakas 1 tekee ostoksen
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(1)
+        kauppa.tilimaksu("matti", "11111")
+
+        # Asiakas 2 tekee uuden ostoksen, ei lisää mitään koriin
+        kauppa.aloita_asiointi()
+        kauppa.tilimaksu("teppo", "22222")
+
+        # Viimeisen maksun summa tulee olla 0
+        self.pankki_mock.tilisiirto.assert_called_with(
+            "teppo",
+            42,
+            "22222",
+            self.kaupan_tili,
+            0
+        )
+
+    def test_uusi_viitenumero_jokaiselle_maksulle(self):
+        # viitegeneraattori palauttaa peräkkäiset arvot
+        self.viite_mock.uusi.side_effect = [100, 101]
+
+        # tuote löytyy ja maksaa 5
+        self.varasto_mock.saldo.return_value = 10
+        self.varasto_mock.hae_tuote.return_value = Tuote(1, "maito", 5)
+
+        kauppa = Kauppa(self.varasto_mock, self.pankki_mock, self.viite_mock)
+
+        # Asiakas 1
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(1)
+        kauppa.tilimaksu("matti", "11111")
+
+        # Asiakas 2
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(1)
+        kauppa.tilimaksu("teppo", "22222")
+
+        # Assertit
+        expected_calls = [
+            ("matti", 100, "11111", self.kaupan_tili, 5),
+            ("teppo", 101, "22222", self.kaupan_tili, 5)
+        ]
+
+        calls = self.pankki_mock.tilisiirto.call_args_list
+
+        # puretaan kutsut tupleiksi
+        actual_calls = [tuple(call.args) for call in calls]
+
+        self.assertEqual(actual_calls, expected_calls)
+
+    def test_tuotteen_lisays_ei_onnistu_jos_saldo_0(self):
+        # saldo on 0 → tuotetta ei pitäisi lisätä, eikä pankkia kutsuta summalla > 0
+        self.varasto_mock.saldo.return_value = 0
+        self.varasto_mock.hae_tuote.return_value = Tuote(1, "maito", 5)
+
+        kauppa = Kauppa(self.varasto_mock, self.pankki_mock, self.viite_mock)
+
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(1)  # ei pitäisi lisätä mitään
+        kauppa.tilimaksu("eeva", "99999")
+
+        # pankkia kutsutaan 0 summalla
+        self.pankki_mock.tilisiirto.assert_called_with(
+            "eeva",
+            42,
+            "99999",
+            self.kaupan_tili,
+            0
+        )
+
+    def test_tuotteen_poistaminen_korista_palauttaa_sen_varastoon(self):
+            tuote = Tuote(1, "maito", 5)
+
+            self.varasto_mock.hae_tuote.return_value = tuote
+            self.varasto_mock.saldo.return_value = 10
+
+            kauppa = Kauppa(self.varasto_mock, self.pankki_mock, self.viite_mock)
+
+            kauppa.aloita_asiointi()
+            kauppa.lisaa_koriin(1)
+            kauppa.poista_korista(1)
+
+            # varasto.palauta_varastoon pitää olla kutsuttu juuri tuolla tuotteella
+            self.varasto_mock.palauta_varastoon.assert_called_with(tuote)
