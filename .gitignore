@@ -7,3 +7,4 @@ viikko1/varasto
 *log.html
 *output.xml
 *report.html
+*.coverage
