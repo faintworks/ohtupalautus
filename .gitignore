@@ -3,3 +3,7 @@ __pycache__/
 .pytest_cache/
 htmlcov/
 viikko1/varasto
+*.png
+*log.html
+*output.xml
+*report.html
