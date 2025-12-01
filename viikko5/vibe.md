@@ -1,0 +1,1 @@
+Copilot toimi mielestäni lähest täydellisesti yhtä ongelmaa lukuunottamatta. Koodi oli selkeää lukea ja sovellus toimi toivotulla tavalla. Copilotilla kuitenkin kesti järjettömän kauan työssä (53min initial issue) ja muutoksia pyydettäessä tuli jokin raja vastaan, jolloin copilot lopetti työt kesken.
