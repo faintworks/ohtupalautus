@@ -1,0 +1,1 @@
+Copilot reminded me of inconsistent method naming in the code review(missing underscores in internal helper methods). Proposed changes were useful and I implemented them before the final merge. I'd say the copilot code review is useful when working alone/in a small group but has to be used with care since it's still AI.
