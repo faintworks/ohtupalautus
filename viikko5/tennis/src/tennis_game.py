@@ -16,7 +16,7 @@ class TennisGame:
     def is_tie(self):
         return self.score1 == self.score2
 
-    def tie_score(self):
+    def _tie_score(self):
         if self.score1 >= 3:
             return "Deuce"
 
@@ -39,7 +39,7 @@ class TennisGame:
 
     def get_score(self):
         if self.is_tie():
-            return self.tie_score()
+            return self._tie_score()
 
         elif self.score1 >= 4 or self.score2 >= 4:
             return self._advantage_or_win()
