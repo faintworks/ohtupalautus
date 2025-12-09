@@ -69,7 +69,13 @@ class Kayttoliittyma:
 
     def _suorita_komento(self, komento):
         komento_olio = self._komennot[komento]
-        komento_olio.suorita()
+
+        if komento == Komento.KUMOA:
+            if self._edellinen_komento:
+                self._edellinen_komento.kumoa()
+        else:
+            komento_olio.suorita()
+            self._edellinen_komento = komento_olio
 
         self._kumoa_painike["state"] = constants.NORMAL
 
@@ -80,3 +86,4 @@ class Kayttoliittyma:
 
         self._syote_kentta.delete(0, constants.END)
         self._arvo_var.set(self._sovelluslogiikka.arvo())
+
