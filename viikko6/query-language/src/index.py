@@ -4,9 +4,24 @@ from matchers import And, HasAtLeast, PlaysIn, All, Not, HasFewerThan, Or
 from querybuilder import QueryBuilder
 
 def main():
+    print("\nTest: QueryBuilder one_of PHI/EDM")
     url = "https://studies.cs.helsinki.fi/nhlstats/2024-25/players.txt"
     reader = PlayerReader(url)
     stats = Statistics(reader)
+    query = QueryBuilder()
+    matcher = (
+        query.one_of(
+            QueryBuilder()
+                .plays_in("PHI")
+                .has_at_least(10, "assists")
+                .has_fewer_than(10, "goals"),
+            QueryBuilder()
+                .plays_in("EDM")
+                .has_at_least(50, "points")
+        ).build()
+    )
+    for player in sorted(stats.matches(matcher), key=lambda p: p.name):
+        print(player)
 
     print("\nTest: QueryBuilder NYR, 10-20 goals")
     query = QueryBuilder()
