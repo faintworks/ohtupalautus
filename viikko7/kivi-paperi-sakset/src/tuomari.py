@@ -1,4 +1,4 @@
-WINNING_SCORE = 5
+WINNING_SCORE = 3
 
 
 # Luokka pitää kirjaa ensimmäisen ja toisen pelaajan pisteistä sekä tasapelien määrästä.
