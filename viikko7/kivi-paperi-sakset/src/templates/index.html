@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Kivi–Paperi–Sakset{% endblock %}
+
+{% block content %}
+<h1>Kivi–Paperi–Sakset</h1>
+<form method="post">
+  <div class="field-group">
+    <label>Pelimuoto</label>
+    <div class="mode-options">
+      <label class="mode-option">
+        <input type="radio" name="mode" value="a" {% if mode == 'a' or not mode %}checked{% endif %}>
+        Ihminen vs. Ihminen
+      </label>
+      <label class="mode-option">
+        <input type="radio" name="mode" value="b" {% if mode == 'b' %}checked{% endif %}>
+        Ihminen vs. Tekoäly
+      </label>
+      <label class="mode-option">
+        <input type="radio" name="mode" value="c" {% if mode == 'c' %}checked{% endif %}>
+        Ihminen vs. Parannettu tekoäly
+      </label>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <label for="p1_move">Ensimmäisen pelaajan siirto</label>
+    <select id="p1_move" name="p1_move" required>
+      <option value="k" {% if p1_move == 'k' %}selected{% endif %}>Kivi (k)</option>
+      <option value="p" {% if p1_move == 'p' %}selected{% endif %}>Paperi (p)</option>
+      <option value="s" {% if p1_move == 's' %}selected{% endif %}>Sakset (s)</option>
+    </select>
+  </div>
+
+  <div class="field-group" id="p2-wrapper">
+    <label for="p2_move">Toisen pelaajan siirto</label>
+    <select id="p2_move" name="p2_move">
+      <option value="k" {% if p2_move == 'k' %}selected{% endif %}>Kivi (k)</option>
+      <option value="p" {% if p2_move == 'p' %}selected{% endif %}>Paperi (p)</option>
+      <option value="s" {% if p2_move == 's' %}selected{% endif %}>Sakset (s)</option>
+    </select>
+  </div>
+
+  <button type="submit">Pelaa kierros</button>
+
+  <p class="hint">Tarvittaessa voit käyttää näppäimiä k, p tai s.</p>
+</form>
+
+{% if error %}
+  <div class="error">{{ error }}</div>
+{% endif %}
+
+{% if result %}
+  <div class="result">
+    <div class="result-title">{{ result }}</div>
+    <div class="result-detail">
+      Ensimmäinen pelaaja: {{ p1_move }}
+      <br>
+      Toinen pelaaja: {{ p2_move_display }}
+    </div>
+  </div>
+{% endif %}
+
+{% if scoreboard %}
+  <div class="result">
+    <div class="result-title">Pistetilanne tälle pelimuodolle</div>
+    <div class="result-detail" style="white-space: pre-line;">
+      {{ scoreboard }}
+    </div>
+  </div>
+{% endif %}
+
+<script>
+  const modeInputs = document.querySelectorAll('input[name="mode"]');
+  const p2Wrapper = document.getElementById('p2-wrapper');
+
+  function updateP2Visibility() {
+    const mode = document.querySelector('input[name="mode"]:checked').value;
+    if (mode === 'a') {
+      p2Wrapper.style.display = '';
+    } else {
+      p2Wrapper.style.display = 'none';
+    }
+  }
+
+  modeInputs.forEach((el) => el.addEventListener('change', updateP2Visibility));
+  updateP2Visibility();
+</script>
+
+{% endblock %}
