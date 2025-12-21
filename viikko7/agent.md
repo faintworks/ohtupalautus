@@ -1,0 +1,5 @@
+Agentti päätyi nopeasti toimivaan ratkaisuun. Käyttöliittymä oli hieman erikoinen mutta ulkoisesti hieno. Testasin nettisivun käsin sekä automatisoiduilla testeillä ja olen melko varma että se toimii oikein. Agentilla oli vaikeuksia virtuaaliympäristön ymmärtämisessä mutta kun kertoi, että sellaista käytetään alkoi homma toimia taas. 
+
+Agentint tekemät testit olivat kattavat sekä niistä ymmärsi mitä testataan. Sama pätee koodiin. Agentti muutti koodia yllättävän vähän, kun sille kertoi että pitää käyttää vanhaa koodia tehokkaasti. Se ei itseasiassa tainnut muuttaa kuin pari riviä ja teki vain uuden moduulin joka hyödynsi vanhan koodin. 
+
+Opin miten hyödyllinen agentti on koodaamisessa, mutta huomasin myös että se on vielä melko puutteellinen. Agentin toimintaan vaikuttaa paljon mitä mallia käyttää, käytin itse GPT5.1 mallia, joka tuntui olevan tehokas. Aikaisemmin käyttämä malli (mahd. Claude sonnet 4.5) aiheutti ongelmia esimerkiksi riippuvuuksien kanssa. Se päivitti pyproject.tomliin välillä vuosiakin vanhoja versioita riippuvuuksista. 
