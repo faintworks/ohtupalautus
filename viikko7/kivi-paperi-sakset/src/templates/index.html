@@ -87,4 +87,12 @@
   updateP2Visibility();
 </script>
 
+{% if victory_popup_message %}
+<script>
+  window.addEventListener('load', function() {
+    alert({{ victory_popup_message | tojson }});
+  });
+</script>
+{% endif %}
+
 {% endblock %}

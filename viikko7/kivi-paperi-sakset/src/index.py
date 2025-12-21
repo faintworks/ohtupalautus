@@ -18,7 +18,8 @@ def main():
 
         print(
             "Peli loppuu kun pelaaja antaa virheellisen siirron "
-            "eli jonkun muun kuin k, p tai s"
+            "eli jonkun muun kuin k, p tai s, tai kun jompikumpi pelaajista "
+            "saavuttaa 5 voittoa"
         )
 
         peli.pelaa()

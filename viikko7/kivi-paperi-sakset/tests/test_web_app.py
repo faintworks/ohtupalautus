@@ -49,3 +49,49 @@ def test_human_vs_simple_ai_round_has_deterministic_scoreboard(client):
     # The scoreboard must reflect exactly one round played in mode b
     assert "Pelitilanne:" in body
     assert "Tasapelit:" in body
+
+
+def test_game_stops_updating_scoreboard_after_five_wins(client):
+    from tuomari import WINNING_SCORE
+
+    # Ensimmäinen pelaaja voittaa viisi kierrosta peräkkäin.
+    last_resp = None
+    for _ in range(WINNING_SCORE):
+        last_resp = client.post(
+            "/",
+            data={"mode": "a", "p1_move": "k", "p2_move": "s"},
+        )
+        assert last_resp.status_code == 200
+
+    body = last_resp.data.decode("utf-8")
+    assert f"Pelitilanne: {WINNING_SCORE} - 0" in body
+
+    # Seuraava yritys pelata ei muuta pistetilannetta, ja käyttäjä näkee
+    # viestin, että peli on jo päättynyt.
+    resp = client.post(
+        "/",
+        data={"mode": "a", "p1_move": "k", "p2_move": "s"},
+    )
+    assert resp.status_code == 200
+    body2 = resp.data.decode("utf-8")
+    assert f"Pelitilanne: {WINNING_SCORE} - 0" in body2
+    assert "Peli on jo päättynyt" in body2
+
+
+def test_victory_popup_script_present_when_game_finishes(client):
+    from tuomari import WINNING_SCORE
+
+    # Pelataan peli siihen asti, että ensimmäinen pelaaja saavuttaa 5 voittoa.
+    last_resp = None
+    for _ in range(WINNING_SCORE):
+        last_resp = client.post(
+            "/",
+            data={"mode": "a", "p1_move": "k", "p2_move": "s"},
+        )
+        assert last_resp.status_code == 200
+
+    body = last_resp.data.decode("utf-8")
+
+    # Sivun tulee sisältää victory-popup -skripti, joka näyttää alertin.
+    assert "alert(" in body
+    assert "saavutti 5 voittoa" in body

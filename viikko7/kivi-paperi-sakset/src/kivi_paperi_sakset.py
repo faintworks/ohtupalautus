@@ -1,4 +1,4 @@
-from tuomari import Tuomari
+from tuomari import Tuomari, WINNING_SCORE
 
 
 class KiviPaperiSakset:
@@ -8,7 +8,11 @@ class KiviPaperiSakset:
         ekan = self._ensimmaisen_siirto()
         tokan = self._toisen_siirto(ekan)
 
-        while self._onko_ok_siirto(ekan) and self._onko_ok_siirto(tokan):
+        while (
+            self._onko_ok_siirto(ekan)
+            and self._onko_ok_siirto(tokan)
+            and not tuomari.peli_loppunut()
+        ):
             tuomari.kirjaa_siirto(ekan, tokan)
             print(tuomari)
 

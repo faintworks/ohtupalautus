@@ -1,3 +1,5 @@
+WINNING_SCORE = 5
+
 
 # Luokka pitää kirjaa ensimmäisen ja toisen pelaajan pisteistä sekä tasapelien määrästä.
 class Tuomari:
@@ -13,6 +15,9 @@ class Tuomari:
             self.ekan_pisteet = self.ekan_pisteet + 1
         else:
             self.tokan_pisteet = self.tokan_pisteet + 1
+
+    def peli_loppunut(self):
+        return self.ekan_pisteet >= WINNING_SCORE or self.tokan_pisteet >= WINNING_SCORE
 
     def __str__(self):
         return f"Pelitilanne: {self.ekan_pisteet} - {self.tokan_pisteet}\nTasapelit: {self.tasapelit}"
