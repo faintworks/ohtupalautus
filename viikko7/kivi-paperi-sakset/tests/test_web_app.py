@@ -81,7 +81,7 @@ def test_game_stops_updating_scoreboard_after_five_wins(client):
 def test_victory_popup_script_present_when_game_finishes(client):
     from tuomari import WINNING_SCORE
 
-    # Pelataan peli siihen asti, että ensimmäinen pelaaja saavuttaa 5 voittoa.
+    # Pelataan peli siihen asti, että ensimmäinen pelaaja saavuttaa voittorajan.
     last_resp = None
     for _ in range(WINNING_SCORE):
         last_resp = client.post(
@@ -94,4 +94,4 @@ def test_victory_popup_script_present_when_game_finishes(client):
 
     # Sivun tulee sisältää victory-popup -skripti, joka näyttää alertin.
     assert "alert(" in body
-    assert "saavutti 5 voittoa" in body
+    assert f"saavutti {WINNING_SCORE} voittoa" in body
